@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    {"id": "payment-gateway", "label": "Payment Gateway (Pod)", "type": "pod", "namespace": "default"},
+    {"id": "compromised-pod", "label": "Compromised Shell (Pod)", "type": "pod", "namespace": "default"},
+    {"id": "kube-dns", "label": "CoreDNS (Service)", "type": "service", "namespace": "kube-system"},
+    {"id": "api.stripe.com", "label": "Stripe API (External)", "type": "external", "namespace": "none"},
+    {"id": "google.com", "label": "Google.com (External)", "type": "external", "namespace": "none"},
+    {"id": "c2-server.evil.com", "label": "C2 Server (External)", "type": "external", "namespace": "none"}
+  ],
+  "links": [
+    {"source": "payment-gateway", "target": "kube-dns", "verdict": "FORWARDED"},
+    {"source": "payment-gateway", "target": "api.stripe.com", "verdict": "FORWARDED"},
+    {"source": "payment-gateway", "target": "google.com", "verdict": "DROPPED"},
+    {"source": "compromised-pod", "target": "c2-server.evil.com", "verdict": "FORWARDED"},
+    {"source": "compromised-pod", "target": "kube-dns", "verdict": "FORWARDED"}
+  ]
+}

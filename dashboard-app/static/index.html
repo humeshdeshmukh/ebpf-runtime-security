@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eBPF Runtime Security & SRE Observability Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="glow-container">
+    <div class="glow-orb" id="orb-1"></div>
+    <div class="glow-orb" id="orb-2"></div>
+  </div>
+
+  <header class="navbar">
+    <div class="logo-area">
+      <div class="shield-icon">🛡️</div>
+      <div class="logo-text">
+        <h1>eBPF SEC-OPS</h1>
+        <span>Kernel-Level Runtime Auditing</span>
+      </div>
+    </div>
+    <div class="status-panel">
+      <div class="status-item">
+        <span class="status-label">Minikube:</span>
+        <span class="status-value" id="status-minikube">Checking...</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Kubernetes:</span>
+        <span class="status-value" id="status-k8s">Checking...</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Tetragon:</span>
+        <span class="status-value" id="status-tetragon">Checking...</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Hubble:</span>
+        <span class="status-value" id="status-hubble">Checking...</span>
+      </div>
+      <div class="badge" id="mode-badge">SIMULATED MODE</div>
+    </div>
+  </header>
+
+  <main class="dashboard-grid">
+    <!-- Row 1: Key Metrics -->
+    <section class="metrics-row">
+      <div class="metric-card card-glow-red">
+        <div class="metric-info">
+          <h3>Blocked Threats</h3>
+          <span class="metric-value" id="metric-blocked">0</span>
+        </div>
+        <div class="metric-icon">🚫</div>
+      </div>
+      <div class="metric-card card-glow-cyan">
+        <div class="metric-info">
+          <h3>Total eBPF Flows</h3>
+          <span class="metric-value" id="metric-flows">0</span>
+        </div>
+        <div class="metric-icon">⚡</div>
+      </div>
+      <div class="metric-card card-glow-purple">
+        <div class="metric-info">
+          <h3>Active Policies</h3>
+          <span class="metric-value" id="metric-policies">2</span>
+        </div>
+        <div class="metric-icon">📜</div>
+      </div>
+      <div class="metric-card card-glow-green">
+        <div class="metric-info">
+          <h3>Avg Syscall Latency</h3>
+          <span class="metric-value">0.82 ms</span>
+        </div>
+        <div class="metric-icon">⏱️</div>
+      </div>
+    </section>
+
+    <!-- Row 2: Service Map & Threat Timeline -->
+    <div class="main-content-row">
+      <section class="panel map-panel">
+        <div class="panel-header">
+          <h2>Cilium Hubble Service Dependency Map</h2>
+          <span class="pulse-dot"></span>
+        </div>
+        <div class="map-container">
+          <canvas id="topology-map"></canvas>
+          <div class="map-overlay">
+            <span class="overlay-text">Interactive Canvas: Drag to move nodes</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel chart-panel">
+        <div class="panel-header">
+          <h2>Threat & Event Timeline (eBPF Probes)</h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="event-chart"></canvas>
+        </div>
+      </section>
+    </div>
+
+    <!-- Row 3: Security Logs & Network Flows -->
+    <div class="logs-row">
+      <section class="panel log-panel">
+        <div class="panel-header">
+          <h2>Tetragon Real-Time Security Audit Logs</h2>
+          <div class="terminal-controls">
+            <span class="term-dot term-close"></span>
+            <span class="term-dot term-min"></span>
+            <span class="term-dot term-expand"></span>
+          </div>
+        </div>
+        <div class="terminal-body" id="security-audit-console">
+          <!-- Live events get injected here -->
+          <div class="term-line loading">Awaiting logs stream from Linux kernel...</div>
+        </div>
+      </section>
+
+      <section class="panel flow-panel">
+        <div class="panel-header">
+          <h2>Cilium Hubble Network Flow Stream</h2>
+        </div>
+        <div class="flow-table-container">
+          <table class="flow-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Source (Pod)</th>
+                <th>Destination</th>
+                <th>Port</th>
+                <th>Protocol</th>
+                <th>Verdict</th>
+              </tr>
+            </thead>
+            <tbody id="network-flows-body">
+              <!-- Live flows get injected here -->
+              <tr>
+                <td colspan="6" class="table-loading">Awaiting kernel network telemetry...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>eBPF Runtime Security & SRE Observability · Stack: Tetragon, Cilium Hubble, Flask, Chart.js</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

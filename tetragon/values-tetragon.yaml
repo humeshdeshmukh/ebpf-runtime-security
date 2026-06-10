@@ -1,0 +1,3 @@
+export:
+  stdout:
+    enabled: true
